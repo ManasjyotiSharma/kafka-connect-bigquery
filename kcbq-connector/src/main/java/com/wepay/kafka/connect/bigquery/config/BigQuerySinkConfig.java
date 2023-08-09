@@ -170,69 +170,74 @@ public class BigQuerySinkConfig extends AbstractConfig {
           "Lastly, if the topic2table map doesn't contain the topic for a record, a table" +
           " with the same name as the topic name would be created";
 
-  public static final String OAUTH2_AUTH_CODE_AUTH_ENDPOINT_CONFIG = "oauth2.authEndpoint";
+  // See https://developers.google.com/identity/protocols/oauth2/web-server for endpoints
+  public static final String OAUTH2_AUTH_CODE_AUTH_ENDPOINT_CONFIG = "oauth.authEndpoint";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_AUTH_ENDPOINT_TYPE = ConfigDef.Type.STRING;
   public static final String OAUTH2_AUTH_CODE_AUTH_ENDPOINT_DEFAULT = "https://accounts.google.com/o/oauth2/v2/auth";
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_AUTH_ENDPOINT_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_AUTH_ENDPOINT_DOC = "The Auth Endpoint of GCP OAuth2";
 
-  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_CONFIG = "oauth2.tokenEndpoint";
+  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_CONFIG = "oauth.tokenEndpoint";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_TYPE = ConfigDef.Type.STRING;
-  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_DEFAULT = "https://oauth2.googleapis.com/token";
+  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_DEFAULT = "https://oauth.googleapis.com/token";
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_DOC = "The Token Endpoint of GCP OAuth2";
 
-  public static final String OAUTH2_AUTH_CODE_CLIENT_ID_CONFIG = "oauth2.clientId";
+  public static final String OAUTH2_AUTH_CODE_CLIENT_ID_CONFIG = "oauth.clientId";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_ID_TYPE = ConfigDef.Type.STRING;
   public static final String OAUTH2_AUTH_CODE_CLIENT_ID_DEFAULT = null;
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_ID_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_CLIENT_ID_DOC = "The Client ID of the OAuth Client";
 
-  public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_CONFIG = "oauth2.clientSecret";
+  public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_CONFIG = "oauth.clientSecret";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_SECRET_TYPE = ConfigDef.Type.PASSWORD;
   public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_DEFAULT = null;
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_SECRET_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_DOC = "The Client Secret of the OAuth Client";
 
-  public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_CONFIG = "oauth2.clientAuthMode";
+  public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_CONFIG = "oauth.clientAuthMode";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_TYPE = ConfigDef.Type.STRING;
   public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_DEFAULT = "REQUEST_BODY";
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_DOC = "The Client Auth Mode for the OAuth Client";
 
-  public static final String OAUTH2_AUTH_CODE_SCOPES_CONFIG = "oauth2.scopes";
+  // see https://developers.google.com/identity/protocols/oauth2/scopes#bigquery
+  public static final String OAUTH2_AUTH_CODE_SCOPES_CONFIG = "oauth.scopes";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_SCOPES_TYPE = ConfigDef.Type.STRING;
-  public static final String OAUTH2_AUTH_CODE_SCOPES_DEFAULT = "";
-  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_SCOPES_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_SCOPES_DOC = "A comma separated list of scopes for the OAuth Client";
+  public static final String OAUTH2_AUTH_CODE_SCOPES_DEFAULT = String.join(",",
+    new String[]{
+      "https://www.googleapis.com/auth/bigquery",
+      "https://www.googleapis.com/auth/bigquery.insertdata",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/cloud-platform.read-only",
+      "https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/devstorage.read_write"
+  }
+  );
 
-  public static final String OAUTH2_AUTH_CODE_SESSION_ID_CONFIG = "oauth2.session.id";
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_SCOPES_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_SESSION_ID_CONFIG = "oauth.session.id";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_SESSION_ID_TYPE = ConfigDef.Type.STRING;
   public static final String OAUTH2_AUTH_CODE_SESSION_ID_DEFAULT = "";
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_SESSION_ID_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_SESSION_ID_DOC = "A unique session id for each OAuth flow";
 
-  public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_CONFIG = "oauth2.refresh.token";
+  public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_CONFIG = "oauth.refresh.token";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_REFRESH_TOKEN_TYPE = ConfigDef.Type.PASSWORD;
   public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_DEFAULT = "";
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_REFRESH_TOKEN_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_DOC = "A refresh token generated after the OAuth flow";
 
-  public static final String OAUTH2_AUTH_CODE_FIELDS_MAP_CONFIG = "oauth2.auth.code.grant.config.map";
+  public static final String OAUTH2_AUTH_CODE_FIELDS_MAP_CONFIG = "oauth.config.map";
   private static final ConfigDef.Type OAUTH2_AUTH_CODE_FIELDS_MAP_TYPE = ConfigDef.Type.STRING;
-  public static final String OAUTH2_AUTH_CODE_FIELD_MAPS_DEFAULT = String.join(", ",
+  public static final String OAUTH2_AUTH_CODE_FIELD_MAPS_DEFAULT = String.join(",",
     new String[]{
-      "auth_endpoint:oauth2.authEndpoint",
-      "token_endpoint:oauth2.tokenEndpoint",
-      "client_id:oauth2.clientId",
-      "client_secret:oauth2.clientSecret",
-      "client_auth_mode:oauth2.clientAuthMode",
-      "scopes:oauth2.scopes",
-      "oauth_session_id:oauth2.session.id"
+      "auth_endpoint:oauth.authEndpoint",
+      "token_endpoint:oauth.tokenEndpoint",
+      "client_id:oauth.clientId",
+      "client_secret:oauth.clientSecret",
+      "client_auth_mode:oauth.clientAuthMode",
+      "scopes:oauth.scopes",
+      "oauth_session_id:oauth.session.id",
+      "refresh_token:oauth.refresh.token"
     }
   );
   private static final ConfigDef.Importance OAUTH2_AUTH_CODE_FIELD_MAPS_IMPORTANCE = ConfigDef.Importance.MEDIUM;
-  public static final String OAUTH2_AUTH_CODE_FIELD_MAPS_DOC = "To map standard auth code grant config to ConfigDefs";
 
   private static final ConfigDef.Validator TOPIC2TABLE_MAP_VALIDATOR = (name, value) -> {
     String topic2TableMapString = (String) ConfigDef.parseType(name, value, TOPIC2TABLE_MAP_TYPE);
@@ -645,6 +650,10 @@ public class BigQuerySinkConfig extends AbstractConfig {
    * @return The ConfigDef object used to define this config's fields.
    */
   public static ConfigDef getConfig() {
+    return addOAuthConfigDefs(getConfigDefs());
+  }
+
+  public static ConfigDef getConfigDefs() {
     return new ConfigDef()
         .define(
             TOPICS_CONFIG,
@@ -968,6 +977,104 @@ public class BigQuerySinkConfig extends AbstractConfig {
             CONNECTOR_RUNTIME_PROVIDER_DEFAULT,
             CONNECTOR_RUNTIME_PROVIDER_IMPORTANCE
         );
+  }
+
+  public static ConfigDef addOAuthConfigDefs(ConfigDef configDef) {
+    ConfigDef.Recommender noopRecommender = new ConfigDef.Recommender() {
+      @Override
+      public List<Object> validValues(String s, Map<String, Object> map) {
+        return Collections.emptyList();
+      }
+
+      @Override
+      public boolean visible(String s, Map<String, Object> map) {
+        return false;
+      }
+    };
+
+    /*
+
+  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_CONFIG = "oauth.tokenEndpoint";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_DEFAULT = "https://oauth.googleapis.com/token";
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_TOKEN_ENDPOINT_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_CLIENT_ID_CONFIG = "oauth.clientId";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_ID_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_CLIENT_ID_DEFAULT = null;
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_ID_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_CONFIG = "oauth.clientSecret";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_SECRET_TYPE = ConfigDef.Type.PASSWORD;
+  public static final String OAUTH2_AUTH_CODE_CLIENT_SECRET_DEFAULT = null;
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_SECRET_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_CONFIG = "oauth.clientAuthMode";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_DEFAULT = "REQUEST_BODY";
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_CLIENT_AUTH_MODE_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  // see https://developers.google.com/identity/protocols/oauth2/scopes#bigquery
+  public static final String OAUTH2_AUTH_CODE_SCOPES_CONFIG = "oauth.scopes";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_SCOPES_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_SCOPES_DEFAULT = String.join(",",
+    new String[]{
+      "https://www.googleapis.com/auth/bigquery",
+      "https://www.googleapis.com/auth/bigquery.insertdata",
+      "https://www.googleapis.com/auth/cloud-platform",
+      "https://www.googleapis.com/auth/cloud-platform.read-only",
+      "https://www.googleapis.com/auth/devstorage.full_control",
+      "https://www.googleapis.com/auth/devstorage.read_only",
+      "https://www.googleapis.com/auth/devstorage.read_write"
+  }
+  );
+
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_SCOPES_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_SESSION_ID_CONFIG = "oauth.session.id";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_SESSION_ID_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_SESSION_ID_DEFAULT = "";
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_SESSION_ID_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_CONFIG = "oauth.refresh.token";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_REFRESH_TOKEN_TYPE = ConfigDef.Type.PASSWORD;
+  public static final String OAUTH2_AUTH_CODE_REFRESH_TOKEN_DEFAULT = "";
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_REFRESH_TOKEN_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+  public static final String OAUTH2_AUTH_CODE_FIELDS_MAP_CONFIG = "oauth.config.map";
+  private static final ConfigDef.Type OAUTH2_AUTH_CODE_FIELDS_MAP_TYPE = ConfigDef.Type.STRING;
+  public static final String OAUTH2_AUTH_CODE_FIELD_MAPS_DEFAULT = String.join(",",
+    new String[]{
+      "auth_endpoint:oauth.authEndpoint",
+      "token_endpoint:oauth.tokenEndpoint",
+      "client_id:oauth.clientId",
+      "client_secret:oauth.clientSecret",
+      "client_auth_mode:oauth.clientAuthMode",
+      "scopes:oauth.scopes",
+      "oauth_session_id:oauth.session.id",
+      "refresh_token:oauth.refresh.token"
+    }
+  );
+  private static final ConfigDef.Importance OAUTH2_AUTH_CODE_FIELD_MAPS_IMPORTANCE = ConfigDef.Importance.MEDIUM;
+
+     */
+    configDef.define(new ConfigDef.ConfigKey(
+      OAUTH2_AUTH_CODE_AUTH_ENDPOINT_CONFIG,
+      OAUTH2_AUTH_CODE_AUTH_ENDPOINT_TYPE,
+      OAUTH2_AUTH_CODE_AUTH_ENDPOINT_DEFAULT,
+      (ConfigDef.Validator)null,
+      OAUTH2_AUTH_CODE_AUTH_ENDPOINT_IMPORTANCE,
+      "",
+      "",
+      -1,
+      ConfigDef.Width.NONE,
+      OAUTH2_AUTH_CODE_AUTH_ENDPOINT_CONFIG,
+      Collections.emptyList(),
+      noopRecommender,
+      true)
+    );
+
+    return configDef;
   }
 
   private static final List<MultiPropertyValidator<BigQuerySinkConfig>> MULTI_PROPERTY_VALIDATIONS = new ArrayList<>();
